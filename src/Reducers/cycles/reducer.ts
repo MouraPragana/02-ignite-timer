@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */
+import { ActionTypes } from './actions'
+
 export interface Cycle {
   id: string
   task: string
@@ -13,12 +14,6 @@ export interface CyclesState {
   activeCycleId: string | null
 }
 
-export enum ActionTypes {
-  ADD_NEW_CYCLE = 'ADD_NEW_CYCLE',
-  INTERRUPT_CURRENT_CYCLE = 'INTERRUPT_CURRENT_CYCLE',
-  MARK_CURRENT_CYCLE_AS_FINISHED = 'MARK_CURRENT_CYCLE_AS_FINISHED',
-}
-
 export function cyclesReducer(state: CyclesState, action: any) {
   switch (action.type) {
     case ActionTypes.ADD_NEW_CYCLE:
@@ -31,7 +26,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       return {
         ...state,
         cycles: state.cycles.map((cycle) => {
-          if (cycle.id === action.payload.activeCycleId) {
+          if (cycle.id === state.activeCycleId) {
             return { ...cycle, interruptedDate: new Date() }
           } else {
             return cycle
@@ -43,7 +38,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       return {
         ...state,
         cycles: state.cycles.map((cycle) => {
-          if (cycle.id === action.payload.activeCycleId) {
+          if (cycle.id === state.activeCycleId) {
             return { ...cycle, finishedDate: new Date() }
           } else {
             return cycle
